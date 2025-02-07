@@ -17,13 +17,13 @@ public class SensorController {
     private final SensorService sensorService;
 
     @GetMapping
-    public List<SensorEntity> getAllSensors(){
-        return sensorService.getAllSensors();
+    public SensorCardDTO getAllSensors(){
+        return sensorService.getSensorCards();
     }
 
-    @GetMapping("/{id}")
-    public Optional<SensorEntity> getSensorById(@PathVariable Long id){
-        return  sensorService.getSensorById(id);
+    @GetMapping("/plant/{id}")
+    public ResponseEntity<List<SensorDTO>> getSensorById(@PathVariable Long id){
+        return ResponseEntity.ok(sensorService.getSensorsByPlantId(id));
     }
 
     @PostMapping

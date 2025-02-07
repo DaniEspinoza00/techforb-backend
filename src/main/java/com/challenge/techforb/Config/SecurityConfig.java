@@ -27,6 +27,20 @@ public class SecurityConfig {
                         authRequest
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/techforb/user/{id}").authenticated()
+
+                                .requestMatchers(HttpMethod.GET,"/techforb/sensors").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/techforb/sensors/{id}").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/techforb/sensors").authenticated()
+                                .requestMatchers(HttpMethod.PUT,"/techforb/sensors/{id}").authenticated()
+                                .requestMatchers(HttpMethod.DELETE,"/techforb/sensors/{id}").authenticated()
+
+                                .requestMatchers(HttpMethod.GET,"/techforb/plant").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/techforb/plant/{id}").authenticated()
+                                .requestMatchers(HttpMethod.POST,"/techforb/plant").authenticated()
+                                .requestMatchers(HttpMethod.PUT,"/techforb/plant/{id}").authenticated()
+                                .requestMatchers(HttpMethod.PUT,"/techforb/plant/{id}/sensor").authenticated()
+                                .requestMatchers(HttpMethod.DELETE,"/techforb/plant/{id}").authenticated()
+
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager -> //para la autenticacion basada en JWT

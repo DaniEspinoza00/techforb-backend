@@ -1,5 +1,6 @@
 package com.challenge.techforb.Plants.Plant;
 
+import com.challenge.techforb.Plants.Sensor.SensorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +16,18 @@ public class PlantController {
     private final PlantService plantService;
 
     @GetMapping
-    public List<PlantEntity> getAllPlants(){
-        return plantService.getAllPlants();
+    public ResponseEntity<List<PlantDashboard>> getAllPlants(){
+        return ResponseEntity.ok(plantService.getAllPlants());
     }
 
     @GetMapping("/{id}")
-    public Optional<PlantEntity> getPlantById(@PathVariable Long id){
+    public Optional<PlantDTO> getPlantById(@PathVariable Long id){
         return  plantService.getPlantById(id);
     }
 
     @PostMapping
-    public PlantEntity createPlant(@RequestBody PlantEntity plantEntity){
-        return plantService.savePlant(plantEntity);
+    public ResponseEntity<PlantEntity> createPlant(@RequestBody PlantEntity plantEntity){
+        return ResponseEntity.ok(plantService.savePlant(plantEntity));
     }
 
     @PutMapping("/{id}")
@@ -37,5 +38,10 @@ public class PlantController {
     @DeleteMapping("/{id}")
     public void deletePlant(@PathVariable Long id){
         plantService.deletePlant(id);
+    }
+
+    @PutMapping("/{id}/sensor")
+    public ResponseEntity<PlantDTO>addSensortoPlant(@PathVariable Long id, @RequestBody SensorEntity sensorEntity){
+        return ResponseEntity.ok(plantService.addSensorToPlant(id,sensorEntity));
     }
 }
