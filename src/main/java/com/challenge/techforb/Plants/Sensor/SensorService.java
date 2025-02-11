@@ -1,7 +1,7 @@
 package com.challenge.techforb.Plants.Sensor;
 
-import com.challenge.techforb.Plants.Plant.PlantEntity;
-import com.challenge.techforb.Plants.Plant.PlantRepository;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorCardDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class SensorService {
     private final SensorRepository sensorRepository;
 
-    public List<SensorEntity> getAllSensors(){
+    /*public List<SensorEntity> getAllSensors(){
         return sensorRepository.findAll();
     }
     public Optional<SensorEntity> getSensorById(Long id){
@@ -22,7 +22,8 @@ public class SensorService {
     }
     public SensorEntity saveSensor (SensorEntity plant){
         return sensorRepository.save(plant);
-    }
+    }*/
+
     public SensorEntity editSensor(Long id, SensorEntity sensor){
         SensorEntity editedSensor = sensorRepository.findById(id).orElseThrow(()-> new RuntimeException("sensor inexistente"));
         editedSensor.setSensorName(sensor.getSensorName());
@@ -51,14 +52,13 @@ public class SensorService {
 
 
     private SensorDTO convertToSensorDTO (SensorEntity sensor){
-        SensorDTO sensorDTO = new SensorDTO();
-        sensorDTO.setIdSensor(sensor.getId_sensor());
-        sensorDTO.setSensorName(sensor.getSensorName());
-        sensorDTO.setOkLectures(sensor.getOkLectures());
-        sensorDTO.setMediaRangeAlert(sensor.getMediaRangeAlert());
-        sensorDTO.setRedAlert(sensor.getRedAlert());
-
-        return sensorDTO;
+        return SensorDTO.builder()
+                .idSensor(sensor.getId_sensor())
+                .sensorName(sensor.getSensorName())
+                .okLectures(sensor.getOkLectures())
+                .mediaRangeAlert(sensor.getMediaRangeAlert())
+                .redAlert(sensor.getRedAlert())
+                .build();
     }
 
     private SensorCardDTO convertToSensorCardDTO(List<SensorEntity> sensorList){

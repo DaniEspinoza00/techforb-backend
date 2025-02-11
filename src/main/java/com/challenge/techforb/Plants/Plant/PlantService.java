@@ -1,6 +1,7 @@
 package com.challenge.techforb.Plants.Plant;
 
-import com.challenge.techforb.Plants.Sensor.SensorDTO;
+import com.challenge.techforb.Plants.Plant.PlantDTOs.PlantDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
 import com.challenge.techforb.Plants.Sensor.SensorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

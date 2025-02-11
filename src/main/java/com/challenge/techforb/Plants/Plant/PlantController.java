@@ -1,5 +1,6 @@
 package com.challenge.techforb.Plants.Plant;
 
+import com.challenge.techforb.Plants.Plant.PlantDTOs.PlantDTO;
 import com.challenge.techforb.Plants.Sensor.SensorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class PlantController {
     private final PlantService plantService;
 
     @GetMapping
-    public ResponseEntity<List<PlantDashboard>> getAllPlants(){
+    public ResponseEntity<List<PlantDashboard>> getAllPlants(){//plantas para el dashboard
         return ResponseEntity.ok(plantService.getAllPlants());
     }
 

@@ -1,12 +1,12 @@
 package com.challenge.techforb.Plants.Sensor;
 
-import com.challenge.techforb.Plants.Plant.PlantEntity;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorCardDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,19 +17,19 @@ public class SensorController {
     private final SensorService sensorService;
 
     @GetMapping
-    public SensorCardDTO getAllSensors(){
+    public SensorCardDTO getAllSensors(){ //para la tarjetas de arriba del dashboard
         return sensorService.getSensorCards();
     }
 
     @GetMapping("/plant/{id}")
     public ResponseEntity<List<SensorDTO>> getSensorById(@PathVariable Long id){
-        return ResponseEntity.ok(sensorService.getSensorsByPlantId(id));
+        return ResponseEntity.ok(sensorService.getSensorsByPlantId(id)); //para las cards de abajo del dashboard
     }
 
-    @PostMapping
+    /*@PostMapping
     public SensorEntity createSensor(@RequestBody SensorEntity plantEntity){
         return sensorService.saveSensor(plantEntity);
-    }
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<SensorEntity> updateSensor(@PathVariable Long id, @RequestBody SensorEntity sensorEntity){

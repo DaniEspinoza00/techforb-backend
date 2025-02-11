@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest->
                         authRequest
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers(HttpMethod.GET,"/techforb/user/{id}").authenticated()
 
                                 .requestMatchers(HttpMethod.GET,"/techforb/sensors").authenticated()

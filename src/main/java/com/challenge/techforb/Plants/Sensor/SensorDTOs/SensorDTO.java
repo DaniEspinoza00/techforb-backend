@@ -1,10 +1,12 @@
-package com.challenge.techforb.Plants.Sensor;
+package com.challenge.techforb.Plants.Sensor.SensorDTOs;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SensorDTO {

@@ -1,6 +1,6 @@
-package com.challenge.techforb.Plants.Plant;
+package com.challenge.techforb.Plants.Plant.PlantDTOs;
 
-import com.challenge.techforb.Plants.Sensor.SensorDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

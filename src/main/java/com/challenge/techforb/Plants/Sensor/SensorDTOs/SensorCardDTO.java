@@ -1,4 +1,4 @@
-package com.challenge.techforb.Plants.Sensor;
+package com.challenge.techforb.Plants.Sensor.SensorDTOs;
 
 
 import lombok.AllArgsConstructor;
