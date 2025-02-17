@@ -2,6 +2,8 @@ package com.challenge.techforb.Plants.Sensor;
 
 import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorCardDTO;
 import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorListDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.updateSensorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,24 +23,20 @@ public class SensorController {
         return sensorService.getSensorCards();
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List <SensorListDTO>> getSensorEntityList(){
+        return ResponseEntity.ok(sensorService.getAllSensors());
+    }
+
     @GetMapping("/plant/{id}")
     public ResponseEntity<List<SensorDTO>> getSensorById(@PathVariable Long id){
         return ResponseEntity.ok(sensorService.getSensorsByPlantId(id)); //para las cards de abajo del dashboard
     }
 
-    /*@PostMapping
-    public SensorEntity createSensor(@RequestBody SensorEntity plantEntity){
-        return sensorService.saveSensor(plantEntity);
-    }*/
 
     @PutMapping("/{id}")
-    public ResponseEntity<SensorEntity> updateSensor(@PathVariable Long id, @RequestBody SensorEntity sensorEntity){
-        return ResponseEntity.ok(sensorService.editSensor(id,sensorEntity));
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteSensor(@PathVariable Long id){
-        sensorService.deleteSensor(id);
+    public ResponseEntity<updateSensorDTO > updateSensor(@PathVariable Long id, @RequestBody updateSensorDTO sensor ){
+        return ResponseEntity.ok(sensorService.editSensor(id,sensor ));
     }
 
 }

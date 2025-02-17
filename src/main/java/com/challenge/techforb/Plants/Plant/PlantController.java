@@ -21,27 +21,17 @@ public class PlantController {
         return ResponseEntity.ok(plantService.getAllPlants());
     }
 
-    @GetMapping("/{id}")
-    public Optional<PlantDTO> getPlantById(@PathVariable Long id){
-        return  plantService.getPlantById(id);
-    }
-
     @PostMapping
-    public ResponseEntity<PlantEntity> createPlant(@RequestBody PlantEntity plantEntity){
+    public ResponseEntity<PlantEntity> createPlant(@RequestBody PlantEntity plantEntity){ //crear planta
         return ResponseEntity.ok(plantService.savePlant(plantEntity));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PlantEntity>updatePlant(@PathVariable Long id, @RequestBody PlantEntity plantEntity){
-        return ResponseEntity.ok(plantService.editPlant(id,plantEntity));
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") //para eliminar la planta
     public void deletePlant(@PathVariable Long id){
         plantService.deletePlant(id);
     }
 
-    @PutMapping("/{id}/sensor")
+    @PutMapping("/{id}/sensor") //para agregar sensores a la planta
     public ResponseEntity<PlantDTO>addSensortoPlant(@PathVariable Long id, @RequestBody SensorEntity sensorEntity){
         return ResponseEntity.ok(plantService.addSensorToPlant(id,sensorEntity));
     }

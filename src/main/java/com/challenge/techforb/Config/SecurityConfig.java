@@ -1,5 +1,6 @@
 package com.challenge.techforb.Config;
 
+import com.challenge.techforb.GlobalExceptionHandler.JwtEntryPoint.JwtAuthenticationEntryPoint;
 import com.challenge.techforb.User.Jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +19,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-                .csrf(csrf->csrf.disable())//para deshabilitar el token basado en csrf cross site request forgery (medida de seguridad como JWT para las solicitudes POST)
+                .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(authRequest->
                         authRequest
                                 .requestMatchers("/auth/**").permitAll()
@@ -30,6 +32,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/techforb/user/{id}").authenticated()
 
                                 .requestMatchers(HttpMethod.GET,"/techforb/sensors").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/techforb/sensors/all").authenticated()
                                 .requestMatchers(HttpMethod.GET,"/techforb/sensors/{id}").authenticated()
                                 .requestMatchers(HttpMethod.POST,"/techforb/sensors").authenticated()
                                 .requestMatchers(HttpMethod.PUT,"/techforb/sensors/{id}").authenticated()
@@ -44,7 +47,10 @@ public class SecurityConfig {
 
                                 .anyRequest().authenticated()
                 )
-                .sessionManagement(sessionManager -> //para la autenticacion basada en JWT
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+                .sessionManagement(sessionManager ->
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

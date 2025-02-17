@@ -2,6 +2,8 @@ package com.challenge.techforb.Plants.Sensor;
 
 import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorCardDTO;
 import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorListDTO;
+import com.challenge.techforb.Plants.Sensor.SensorDTOs.updateSensorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,24 +16,27 @@ import java.util.stream.Collectors;
 public class SensorService {
     private final SensorRepository sensorRepository;
 
-    /*public List<SensorEntity> getAllSensors(){
-        return sensorRepository.findAll();
+    public List<SensorListDTO> getAllSensors(){
+        return sensorRepository.findAll().stream()
+                .map(this::convertToSensorListDTO)
+                .collect(Collectors.toList());
     }
-    public Optional<SensorEntity> getSensorById(Long id){
-        return sensorRepository.findById(id);
-    }
-    public SensorEntity saveSensor (SensorEntity plant){
-        return sensorRepository.save(plant);
-    }*/
 
-    public SensorEntity editSensor(Long id, SensorEntity sensor){
-        SensorEntity editedSensor = sensorRepository.findById(id).orElseThrow(()-> new RuntimeException("sensor inexistente"));
-        editedSensor.setSensorName(sensor.getSensorName());
-        editedSensor.setOkLectures(sensor.getOkLectures());
-        editedSensor.setMediaRangeAlert(sensor.getMediaRangeAlert());
-        sensor.setRedAlert(sensor.getRedAlert());
+    public updateSensorDTO  editSensor(Long id, updateSensorDTO sensor){
+        SensorEntity foundSensor = sensorRepository.findById(id).orElseThrow(()-> new RuntimeException("sensor inexistente"));
+        foundSensor.setSensorName(sensor.getSensorName());
+        foundSensor.setOkLectures(sensor.getOkLectures());
+        foundSensor.setMediaRangeAlert(sensor.getMediaRangeAlert());
+        foundSensor.setRedAlert(sensor.getRedAlert());
 
-        return sensorRepository.save(editedSensor);
+        SensorEntity updatedSensor = sensorRepository.save(foundSensor);
+
+        return updateSensorDTO.builder()
+                .sensorName(updatedSensor.getSensorName())
+                .okLectures(updatedSensor.getOkLectures())
+                .mediaRangeAlert(updatedSensor.getMediaRangeAlert())
+                .redAlert(updatedSensor.getRedAlert())
+                .build();
     }
 
     public void deleteSensor(Long id){
@@ -71,6 +76,17 @@ public class SensorService {
                 .sumMediaAlert(sumMediaAlert)
                 .sumRedAlert(sumRedAlert)
                 .disabledSensors(sumRedAlert)
+                .build();
+    }
+
+    private SensorListDTO convertToSensorListDTO (SensorEntity sensor){
+        return SensorListDTO.builder()
+                .idSensor(sensor.getId_sensor())
+                .sensorName(sensor.getSensorName())
+                .okLectures(sensor.getOkLectures())
+                .mediaRangeAlert(sensor.getMediaRangeAlert())
+                .redAlert(sensor.getRedAlert())
+                .idPlant(sensor.getPlant()!=null?sensor.getPlant().getId():null)
                 .build();
     }
 }

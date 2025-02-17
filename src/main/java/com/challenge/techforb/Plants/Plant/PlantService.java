@@ -3,6 +3,7 @@ package com.challenge.techforb.Plants.Plant;
 import com.challenge.techforb.Plants.Plant.PlantDTOs.PlantDTO;
 import com.challenge.techforb.Plants.Sensor.SensorDTOs.SensorDTO;
 import com.challenge.techforb.Plants.Sensor.SensorEntity;
+import com.challenge.techforb.Plants.Sensor.SensorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,7 @@ public class PlantService {
                 .map(this::convertToPlantDashboard)
                 .collect(Collectors.toList());
     }
-    public Optional<PlantDTO> getPlantById(Long id){
-        return plantRepository.findById(id).map(this::convertToPlantDTO);
-    }
+
     public PlantEntity savePlant (PlantEntity plant){
         return plantRepository.save(plant);
     }
@@ -37,14 +36,25 @@ public class PlantService {
         plantRepository.deleteById(id);
     }
 
+    public PlantDTO addSensorToPlant(Long id, SensorEntity sensor) {
+        PlantEntity plant = plantRepository.findById(id).orElseThrow(() -> new RuntimeException("Planta inexistente"));
 
-    public PlantDTO addSensorToPlant(Long id, SensorEntity sensor){
-        PlantEntity plant = plantRepository.findById(id).orElseThrow(()->new RuntimeException("Planta inexistente"));
-        plant.addSensorToPlant(sensor);
+        Optional<SensorEntity> findSensor = plant.getSensors().stream() //si no funciona SensorEntiyt, cambiar a Optional
+                .filter(s -> s.getSensorName().equals(sensor.getSensorName()))
+                .findFirst();
+
+        if (findSensor.isPresent()) {
+            SensorEntity existingSensor = findSensor.get();
+            existingSensor.setOkLectures(sensor.getOkLectures());
+            existingSensor.setMediaRangeAlert(sensor.getMediaRangeAlert());
+            existingSensor.setRedAlert(sensor.getRedAlert());
+        } else {
+            plant.addSensorToPlant(sensor);
+        }
+
         plantRepository.save(plant);
         return convertToPlantDTO(plant);
     }
-
 
     ///funciones privadas
 
